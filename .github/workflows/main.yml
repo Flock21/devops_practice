@@ -1,16 +1,21 @@
-name: Docker CI
+name: Docker CI/CD
 
 on:
   push:
-
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Скачиваем свежий код
         uses: actions/checkout@v3
-
-      - name: Собираем наш Docker-образ
-        run: docker build -t my-portfolio .
+      - name: Логинимся в Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Собираем и отправляем образ
+        run: |
+          docker build -t flock21/portfolio:latest .
+          docker push flock21/portfolio:latest
