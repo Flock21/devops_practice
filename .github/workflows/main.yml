@@ -1,0 +1,16 @@
+name: Docker CI
+
+on:
+  push:
+
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачиваем свежий код
+        uses: actions/checkout@v3
+
+      - name: Собираем наш Docker-образ
+        run: docker build -t my-portfolio .
